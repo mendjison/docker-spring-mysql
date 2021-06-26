@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: backend-config-map
+  namespace: kube-system
+  #namespace: default
+data:
+  DB_PORT: "3307"
+  SERVER_PORT: "8080"
+  DB_HOST_NAME: database-service

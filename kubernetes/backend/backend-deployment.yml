@@ -1,0 +1,52 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+  namespace: kube-system
+  #namespace: default
+spec:
+  ports:
+    - port: 8080
+      targetPort: 8080
+      name: http
+      #nodePort: 32001
+  selector:
+    app: backend-pod
+  sessionAffinity: ClientIP
+  type: LoadBalancer
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+  namespace: kube-system
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend-pod
+  template:
+    metadata:
+      name: backend-pod
+      namespace: kube-system
+      labels:
+        app: backend-pod
+    spec:
+      containers:
+        - image: mendji/spring-mysql
+          name: backend-container
+          imagePullPolicy: Always
+
+          envFrom:
+            - secretRef:
+                name: backend-connection-to-db-secret
+            - configMapRef:
+                name: backend-config-map
+
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP
+  #kubectl port-forward service/dev-java-service 7080:8087

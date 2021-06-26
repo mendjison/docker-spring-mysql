@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: spring-mysql-ingress
+  namespace: kube-system
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /users
+            pathType: Prefix
+            backend:
+              service:
+                name: backend-service
+                port:
+                  number: 8080
+      host: spring-mysql-ingress.com
+
+      #nslookup spring-mysql-ingress.com $(minikube ip)
+      #dockerd-rootless-setuptool.sh install
+      sudo usermod -aG libvirt $USER

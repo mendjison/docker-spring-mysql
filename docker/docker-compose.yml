@@ -1,0 +1,47 @@
+# Launch
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:latest
+    container_name: mysql
+    hostname: mysql
+    restart: always
+    env_file:
+      - ./.env
+    #environment:
+      #- MYSQL_ROOT_PASSWORD=abcde
+      #- MYSQL_DATABASE=dbspring
+      #- MYSQL_DATABASE=keycloak
+      #- MYSQL_USER=keycloak
+      #- MYSQL_PASSWORD=keycloak
+    ports:
+      - 3307:3306
+    volumes:
+      - mysqlData:/var/lib/mysql
+
+  backend:
+    container_name: backend
+    image: backend
+    hostname: backend
+    build:
+      dockerfile: ./Dockerfile
+      context: .
+    restart: always
+    depends_on:
+      - mysql
+    env_file:
+      - ./.env
+    #environment:
+      #- DB_HOST_NAME=${DB_HOST_NAME}
+      #- DB_PORT=${DB_PORT}
+      #- DB_NAME=${DB_NAME}
+      #- DB_USERNAME=$DB_USERNAME}
+      #- DB_PASSWORD=${DB_PASSWORD}
+      #- SERVER_PORT=${SERVER_PORT}
+    ports:
+      - ${SERVER_COMMUNICATION_PORT}:${SERVER_PORT}
+
+volumes:
+  mysqlData:
+    driver: local
