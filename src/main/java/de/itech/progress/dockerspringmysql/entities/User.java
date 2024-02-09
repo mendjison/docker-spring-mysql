@@ -1,16 +1,14 @@
 package de.itech.progress.dockerspringmysql.entities;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
 import java.io.Serializable;
 
 @Entity
-@Data
-@Builder
+@Getter
+@Setter
 public class User implements Serializable {
     @Id
     private String userId;
