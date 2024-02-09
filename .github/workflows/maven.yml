@@ -29,8 +29,7 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
           architecture: x64
-      - name: java version
-        run: java --version
+
       - name: maven version
         run: mvn --version
       - name: Build with Maven
